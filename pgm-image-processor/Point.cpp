@@ -12,12 +12,12 @@ Point::Point(int x, int y)
 	this->y = y;
 }
 
-int Point::getX()
+int Point::getX() const
 {
 	return x;
 }
 
-int Point::getY()
+int Point::getY() const
 {
 	return y;
 }

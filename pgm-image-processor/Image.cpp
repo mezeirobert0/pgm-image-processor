@@ -42,21 +42,35 @@ Image::Image(const Image& other)
 		m_data[i] = new unsigned char[m_width];
 
 		for (unsigned j = 0; j < m_width; j++)
-			m_data[i][j] = static_cast<unsigned char>(0);
+			m_data[i][j] = other.m_data[i][j];
 	}
 }
 
 Image& Image::operator=(const Image& other)
 {
+	release();
+	
+	m_width = other.m_width;
+	m_height = other.m_height;
+
+	m_data = new unsigned char* [m_height];
+
+	for (unsigned i = 0; i < m_height; i++)
+	{
+		m_data[i] = new unsigned char[m_width];
+
+		for (unsigned j = 0; j < m_width; j++)
+			m_data[i][j] = other.m_data[i][j];
+	}
+
 	return *this;
 }
 
 Image::~Image()
 {
-	for (unsigned i = 0; i < m_height; i++)
-		delete[] m_data[i];
-	
-	delete[] m_data;
+	m_width = 0;
+	m_height = 0;
+	release();
 }
 
 bool Image::load(std::string imagePath)
@@ -130,22 +144,52 @@ Image Image::operator-(const Image& i)
 	return diffImage;
 }
 
-/*
 Image Image::operator*(double s)
 {
+	Image newImage = *this;
+	
+	for (unsigned i = 0; i < newImage.m_height; i++)
+		for (unsigned j = 0; j < newImage.m_width; j++)
+		{
+			short charValue = static_cast<unsigned short>(newImage.m_data[i][j]);
+			charValue *= s;
 
+			if (charValue < 0)
+				charValue = 0;
+
+			else if (charValue > 255)
+				charValue = 255;
+
+			newImage.m_data[i][j] = static_cast<unsigned char>(charValue);
+		}
+
+	return newImage;
 }
 
 bool Image::getROI(Image& roiImg, Rectangle roiRect)
 {
+	if (roiRect.getX() < 0 || roiRect.getY() < 0)
+		return false;
 
+	Rectangle imgRect = Rectangle(0, 0, m_width, m_height);
+	Rectangle intersection = imgRect & roiRect;
+
+	if (intersection.getX() == -1)
+		return false;
+
+	roiImg = Image(intersection.getWidth(), intersection.getHeight());
+	
+	for (unsigned i = 0; i < roiImg.m_height; i++)
+		for (unsigned j = 0; j < roiImg.m_width; j++)
+			roiImg.m_data[i][j] = m_data[i + intersection.getX()][j + intersection.getY()];
+
+	return true;
 }
 
 bool Image::getROI(Image& roiImg, unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
-
+	return getROI(roiImg, Rectangle(x, y, width, height));
 }
-*/
 
 bool Image::isEmpty() const
 {
@@ -180,16 +224,20 @@ unsigned char& Image::at(Point pt)
 	return m_data[pt.getX()][pt.getY()];
 }
 
-/*
 unsigned char* Image::row(int y)
 {
+	if (y < 0 || y >= m_height)
+		return nullptr;
 
+	return m_data[y];
 }
-*/
 
 void Image::release()
 {
+	for (unsigned i = 0; i < m_height; i++)
+		delete[] m_data[i];
 
+	delete[] m_data;
 }
 
 std::istream& operator>>(std::istream& is, Image& dt)
@@ -209,11 +257,11 @@ std::istream& operator>>(std::istream& is, Image& dt)
 	if (dt.m_width != w || dt.m_height != h)
 	{
 		//delete the previous array
-		dt.~Image();
+		dt.release();
 		dt = Image(w, h);
 	}
 
-	char maxValue;
+	unsigned short maxValue;
 	is >> maxValue;
 
 	unsigned short charValue;
@@ -233,6 +281,11 @@ std::ostream& operator<<(std::ostream& os, const Image& dt)
 	os << "P2\n" << "# PGM image\n" << dt.m_width << ' ' << dt.m_height << '\n' << 255 << '\n';
 
 	unsigned short valuesPrinted = 0;
+	unsigned short maxNumberOfValues = 15;
+	
+	if (dt.m_width <= 15)
+		maxNumberOfValues = dt.m_width;
+
 	for (unsigned i = 0; i < dt.m_height; i++)
 	{
 		//limiting number of char values to 15
@@ -243,7 +296,7 @@ std::ostream& operator<<(std::ostream& os, const Image& dt)
 			os << charValue;
 			valuesPrinted++;
 
-			if (valuesPrinted < 15)
+			if (valuesPrinted < maxNumberOfValues)
 				os << ' ';
 			else
 			{

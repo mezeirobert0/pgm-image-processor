@@ -24,5 +24,5 @@ public:
 	friend Rectangle operator-(const Rectangle&, const Point&);
 
 	friend Rectangle operator&(const Rectangle& rect1, const Rectangle& rect2);
-	//friend Rectangle operator&(const Rectangle& rect1, const Rectangle& rect2);
+	//friend Rectangle operator|(const Rectangle& rect1, const Rectangle& rect2);
 };

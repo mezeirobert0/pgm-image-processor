@@ -71,6 +71,7 @@ Rectangle operator-(const Rectangle& rect, const Point& point)
 Rectangle operator&(const Rectangle& rect1, const Rectangle& rect2)
 {
 	int newX, newY, newWidth, newHeight;
+	newX = newY = newWidth = newHeight = -1;
 
 	//top-left corner of rect2 is in rect1
 	if (rect1.x <= rect2.x && rect2.x <= rect1.x + rect1.width - 1)
@@ -88,6 +89,8 @@ Rectangle operator&(const Rectangle& rect1, const Rectangle& rect2)
 				newHeight = rect2.height;
 
 			else newHeight = rect1.y + rect1.height - rect2.y;
+
+			return Rectangle(newX, newY, newWidth, newHeight);
 		}
 
 	//top-left corner of rect1 is in rect2
@@ -106,6 +109,8 @@ Rectangle operator&(const Rectangle& rect1, const Rectangle& rect2)
 				newHeight = rect1.height;
 
 			else newHeight = rect2.y + rect2.height - rect1.y;
+
+			return Rectangle(newX, newY, newWidth, newHeight);
 		}
 
 	//bottom-left corner of rect2 is in rect1
@@ -126,6 +131,69 @@ Rectangle operator&(const Rectangle& rect1, const Rectangle& rect2)
 				newHeight = rect1.height;
 
 			else newHeight = rect2.y + rect2.height - rect1.y;
+
+			return Rectangle(newX, newY, newWidth, newHeight);
+		}
+
+	//bottom-left corner of rect1 is in rect2
+	bottomLeftX = rect1.x;
+	bottomLeftY = rect1.y + rect1.height - 1;
+	if (rect2.x <= bottomLeftX && bottomLeftX <= rect2.x + rect2.width - 1)
+		if (rect2.y <= bottomLeftY && bottomLeftY <= rect2.y + rect2.height - 1)
+		{
+			newX = rect1.x;
+			newY = rect2.y;
+
+			if (rect1.x + rect1.width <= rect2.x + rect2.width)
+				newWidth = rect1.width;
+
+			else newWidth = rect2.x + rect2.width - rect1.x;
+
+			if (rect2.y + rect2.height <= rect1.y + rect1.height)
+				newHeight = rect2.height;
+
+			else newHeight = rect1.y + rect1.height - rect2.y;
+
+			return Rectangle(newX, newY, newWidth, newHeight);
+		}
+	//case uncovered: rect2 intersects rect1 through left side
+	if (rect2.x <= rect1.x && rect1.x <= rect2.x + rect2.width - 1)
+		if (rect1.y <= rect2.y && rect2.y <= rect1.y + rect1.height - 1)
+		{
+			newX = rect1.x;
+			newY = rect2.y;
+
+			if (rect1.x + rect1.width <= rect2.x + rect2.width)
+				newWidth = rect1.width;
+
+			else newWidth = rect2.x + rect2.width - rect1.x;
+
+			if (rect2.y + rect2.height <= rect1.y + rect1.height)
+				newHeight = rect2.height;
+
+			else newHeight = rect1.y + rect1.height - rect2.y;
+
+			return Rectangle(newX, newY, newWidth, newHeight);
+		}
+
+	//case uncovered: rect1 intersects rect2 through left side
+	if (rect1.x <= rect2.x && rect2.x <= rect1.x + rect1.width - 1)
+		if (rect2.y <= rect1.y && rect1.y <= rect2.y + rect2.height - 1)
+		{
+			newX = rect2.x;
+			newY = rect1.y;
+
+			if (rect2.x + rect2.width <= rect1.x + rect1.width)
+				newWidth = rect2.width;
+
+			else newWidth = rect1.x + rect1.width - rect2.x;
+
+			if (rect1.y + rect1.height <= rect2.y + rect2.height)
+				newHeight = rect1.height;
+
+			else newHeight = rect2.y + rect2.height - rect1.y;
+
+			return Rectangle(newX, newY, newWidth, newHeight);
 		}
 
 	return Rectangle(newX, newY, newWidth, newHeight);

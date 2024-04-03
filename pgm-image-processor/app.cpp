@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Image.h"
+#include "BrightnessContrast.h"
 
 int main()
 {
@@ -7,17 +8,26 @@ int main()
     img.load("../images/small_image.ascii.pgm");
     img.save("../images/small_image.ascii.pgm");
 
-    Image newImg;
-    img.getROI(newImg, 1, 1, 2, 2);
-
-    Image newImg2;
-    img.getROI(newImg2, 0, 0, 2, 2);
+    Image img1 = Image::zeros(4, 4);
+    Image img2;
+    std::cout << img1 << '\n';
     
-    std::cout << newImg2 << "\n\n" << newImg << "\n\n" << newImg2 - newImg << "\n\n";
+    BrightnessContrast bc(4, 4);
+    bc.process(img1, img2);
+    std::cout << img2 << '\n'
+        ;
+    bc.process(img2, img1);
+    std::cout << img1 << '\n';
 
-    std::cout << (int)(img.at(2, 1)) << "\n\n";
+    BrightnessContrast bc1(10, 10);
+    bc1.process(img1, img2);
+    std::cout << img2 << '\n';
 
-    std::cout << Image::zeros(4, 4);
+    bc1.process(img2, img1);
+    std::cout << img1 << '\n';
+
+    BrightnessContrast(1, -5).process(img1, img2);
+    std::cout << img2 << '\n';
 
     return 0;
 }

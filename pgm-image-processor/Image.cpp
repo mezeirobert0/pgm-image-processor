@@ -7,6 +7,8 @@
 #include "Rectangle.h"
 #include "Size.h"
 
+#include <iostream>
+
 Image::Image()
 {
 	m_data = nullptr;
@@ -31,7 +33,7 @@ Image::Image(unsigned int w, unsigned int h)
 }
 
 Image::Image(const Image& other)
-{
+{	
 	m_width = other.m_width;
 	m_height = other.m_height;
 
@@ -48,19 +50,22 @@ Image::Image(const Image& other)
 
 Image& Image::operator=(const Image& other)
 {
-	release();
-	
-	m_width = other.m_width;
-	m_height = other.m_height;
-
-	m_data = new unsigned char* [m_height];
-
-	for (unsigned i = 0; i < m_height; i++)
+	if (this != &other)
 	{
-		m_data[i] = new unsigned char[m_width];
+		release();
 
-		for (unsigned j = 0; j < m_width; j++)
-			m_data[i][j] = other.m_data[i][j];
+		m_width = other.m_width;
+		m_height = other.m_height;
+
+		m_data = new unsigned char* [m_height];
+
+		for (unsigned i = 0; i < m_height; i++)
+		{
+			m_data[i] = new unsigned char[m_width];
+
+			for (unsigned j = 0; j < m_width; j++)
+				m_data[i][j] = other.m_data[i][j];
+		}
 	}
 
 	return *this;
@@ -68,9 +73,9 @@ Image& Image::operator=(const Image& other)
 
 Image::~Image()
 {
+	release();
 	m_width = 0;
 	m_height = 0;
-	release();
 }
 
 bool Image::load(std::string imagePath)
@@ -235,10 +240,15 @@ unsigned char* Image::row(int y)
 
 void Image::release()
 {
-	for (unsigned i = 0; i < m_height; i++)
-		delete[] m_data[i];
+	if (m_data != nullptr)
+	{
+		for (unsigned i = 0; i < m_height; i++)
+			delete[] m_data[i];
 
-	delete[] m_data;
+		delete[] m_data;
+
+		m_data = nullptr;
+	}
 }
 
 std::istream& operator>>(std::istream& is, Image& dt)
@@ -312,27 +322,16 @@ std::ostream& operator<<(std::ostream& os, const Image& dt)
 
 Image Image::zeros(unsigned int width, unsigned int height)
 {
-	Image zeroImage(width, height);
-	
-	return zeroImage;
+	return Image(width, height);
 }
 
 Image Image::ones(unsigned int width, unsigned int height)
 {
-	Image oneImage;
-	
-	oneImage.m_width = width;
-	oneImage.m_height = height;
-
-	oneImage.m_data = new unsigned char* [height];
+	Image oneImage(width, height);
 
 	for (unsigned i = 0; i < height; i++)
-	{
-		oneImage.m_data[i] = new unsigned char[width];
-
 		for (unsigned j = 0; j < width; j++)
 			oneImage.m_data[i][j] = 255;
-	}
 
 	return oneImage;
 }

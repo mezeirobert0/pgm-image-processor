@@ -151,14 +151,15 @@ Image Image::operator*(double s) const
 	for (unsigned i = 0; i < newImage.m_height; i++)
 		for (unsigned j = 0; j < newImage.m_width; j++)
 		{
-			short charValue = static_cast<unsigned short>(newImage.m_data[i][j]);
-			charValue *= s;
+			unsigned short charValue = static_cast<unsigned short>(newImage.m_data[i][j]);
 
-			if (charValue < 0)
+			if (charValue * s < 0)
 				charValue = 0;
 
-			else if (charValue > 255)
+			else if (charValue * s > 255)
 				charValue = 255;
+
+			else charValue *= s;
 
 			newImage.m_data[i][j] = static_cast<unsigned char>(charValue);
 		}

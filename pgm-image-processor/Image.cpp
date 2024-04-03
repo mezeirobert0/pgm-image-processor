@@ -102,7 +102,7 @@ bool Image::save(std::string imagePath) const
 	return true;
 }
 
-Image Image::operator+(const Image& i)
+Image Image::operator+(const Image& i) const
 {
 	if (!(size() == i.size()))
 		throw std::runtime_error("The images are different sizes");
@@ -123,7 +123,7 @@ Image Image::operator+(const Image& i)
 	return sumImage;
 }
 
-Image Image::operator-(const Image& i)
+Image Image::operator-(const Image& i) const
 {
 	if (!(size() == i.size()))
 		throw std::runtime_error("The images are different sizes");
@@ -144,7 +144,7 @@ Image Image::operator-(const Image& i)
 	return diffImage;
 }
 
-Image Image::operator*(double s)
+Image Image::operator*(double s) const
 {
 	Image newImage = *this;
 	

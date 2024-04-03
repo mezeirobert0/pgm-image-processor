@@ -21,11 +21,11 @@ public:
 
 	bool save(std::string imagePath) const;
 
-	Image operator+(const Image& i);
+	Image operator+(const Image& i) const;
 
-	Image operator-(const Image& i);
+	Image operator-(const Image& i) const;
 
-	Image operator*(double s);
+	Image operator*(double s) const;
 
 	bool getROI(Image& roiImg, Rectangle roiRect);
 

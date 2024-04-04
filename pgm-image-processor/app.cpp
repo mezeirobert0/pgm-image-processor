@@ -3,6 +3,7 @@
 #include "Image.h"
 #include "BrightnessContrast.h"
 #include "GammaCorrection.h"
+#include "Convolution.h"
 #include <stdlib.h>
 #include <crtdbg.h>
 
@@ -39,6 +40,14 @@ int main()
 
     GammaCorrection gc(0.9);
     gc.process(baboonImg1, baboonImg2);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    std::vector<std::vector<short>> ker(3, std::vector<short>(3));
+    for (short i = 0; i < 3; i++)
+        for (short j = 0; j < 3; j++)
+            ker[i][j] = 1;
+
+    Convolution(ker, scale).process(baboonImg1, baboonImg2);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
     // _CrtDumpMemoryLeaks();

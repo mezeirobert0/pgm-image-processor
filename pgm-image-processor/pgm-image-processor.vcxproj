@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="app.cpp" />
     <ClCompile Include="BrightnessContrast.cpp" />
+    <ClCompile Include="DrawingModule.cpp" />
     <ClCompile Include="Convolution.cpp" />
     <ClCompile Include="GammaCorrection.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BrightnessContrast.h" />
+    <ClInclude Include="DrawingModule.h" />
     <ClInclude Include="Convolution.h" />
     <ClInclude Include="GammaCorrection.h" />
     <ClInclude Include="Image.h" />

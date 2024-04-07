@@ -6,6 +6,7 @@
 #include "Convolution.h"
 #include <stdlib.h>
 #include <crtdbg.h>
+#include "DrawingModule.h"
 
 int main()
 {
@@ -43,6 +44,15 @@ int main()
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
     DrawingModule::drawRectangle(baboonImg2, Point(10, 10), Point(100, 150), (unsigned char)255);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    DrawingModule::drawRectangle(baboonImg2, Point(10, 10), Point(100, 150), (unsigned char)255);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    DrawingModule::drawLine(baboonImg2, Point(-100, -100), Point(100, 150), (unsigned char)255);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    DrawingModule::drawCircle(baboonImg2, Point(500, 500), 20, (unsigned char)255);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
     DrawingModule::drawLine(baboonImg2, Point(-100, -100), Point(100, 150), (unsigned char)255);

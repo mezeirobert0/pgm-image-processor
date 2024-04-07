@@ -2,9 +2,9 @@
 #include "ImageProcessing.h"
 #include <vector>
 
-typedef short (*scalingFunction)(int);
+typedef int (*scalingFunction)(int);
 
-short scale(short value);
+int scale(int value);
 
 class Convolution : public ImageProcessing
 {

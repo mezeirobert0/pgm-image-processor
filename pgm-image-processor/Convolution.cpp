@@ -1,7 +1,7 @@
 #include "Convolution.h"
 #include <stdexcept>
 
-short scale(short value)
+int scale(int value)
 {
 	if (value < 0)
 		return 0;
@@ -25,17 +25,24 @@ void Convolution::process(const Image& src, Image& dst)
 	int kernelSum = 0;
 	int kernelSize = kernel.size();
 	for (unsigned short i = 0; i < kernelSize; i++)
-		for (unsigned short j = 0; j < kernelSize; i++)
+		for (unsigned short j = 0; j < kernelSize; j++)
 			kernelSum += kernel[i][j];
 
 	for (unsigned short i = 0; i < dst.height(); i++)
-		for (unsigned short j = 0; j < dst.width(); i++)
+		for (unsigned short j = 0; j < dst.width(); j++)
 		{
 			short charValue = 0;
 
 			for (unsigned short u = 0; u < kernelSize; u++)
 				for (unsigned short v = 0; v < kernelSize; v++)
-					charValue += kernel[u][v] * static_cast<unsigned short>(dst.at(i + u - kernelSize / 2, j + v - kernelSize / 2));
+				{
+					int xIndex = static_cast<int>(i - u + kernelSize / 2);
+					int yIndex = static_cast<int>(j - v + kernelSize / 2);
+
+					// Check for boundary conditions
+					if (xIndex >= 0 && xIndex < dst.height() && yIndex >= 0 && yIndex < dst.width())
+						charValue += kernel[u][v] * static_cast<unsigned short>(dst.at(xIndex, yIndex));
+				}
 
 			charValue = scale(charValue / kernelSum);
 

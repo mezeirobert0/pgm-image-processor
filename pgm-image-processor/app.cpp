@@ -47,8 +47,9 @@ int main()
         for (short j = 0; j < 3; j++)
             ker[i][j] = 1;
 
-    Convolution(ker, scale).process(baboonImg1, baboonImg2);
-    baboonImg2.save("../images/baboon_2.ascii.pgm");
+    Convolution c1(ker, scale);
+    c1.process(baboonImg1, baboonImg2);
+    baboonImg2.save("../images/baboon_3.ascii.pgm");
 
     // _CrtDumpMemoryLeaks();
     // code in main must be put in { } in order for the destructor to kick in before the _CrtDumpMemoryLeaks() gets called

@@ -38,8 +38,17 @@ int main()
     Image baboonImg1, baboonImg2;
     baboonImg1.load("../images/baboon.ascii.pgm");
 
-    GammaCorrection gc(0.9);
+    GammaCorrection gc(0.8);
     gc.process(baboonImg1, baboonImg2);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    DrawingModule::drawRectangle(baboonImg2, Point(10, 10), Point(100, 150), (unsigned char)255);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    DrawingModule::drawLine(baboonImg2, Point(-100, -100), Point(100, 150), (unsigned char)255);
+    baboonImg2.save("../images/baboon_2.ascii.pgm");
+
+    DrawingModule::drawCircle(baboonImg2, Point(500, 500), 20, (unsigned char)255);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
     std::vector<std::vector<short>> ker(3, std::vector<short>(3));

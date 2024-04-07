@@ -5,7 +5,8 @@ void DrawingModule::drawCircle(Image& image, Point center, int radius, unsigned 
 	for (int y = center.getY() - radius; y <= center.getY() + radius; y++)
 		for (int x = center.getX() - radius; x <= center.getX() + radius; x++)
 			if (std::sqrt(std::pow(x - center.getX(), 2) + std::pow(y - center.getY(), 2)) <= radius) 
-				image.at(x, y) = color;
+				if (0 <= x && x <= image.width() - 1 && 0 <= y && y <= image.width() - 1)
+					image.at(x, y) = color;
 }
 
 void DrawingModule::drawLine(Image& img, Point p1, Point p2, unsigned char color)
@@ -30,7 +31,8 @@ void DrawingModule::drawLine(Image& img, Point p1, Point p2, unsigned char color
 
 	while (true)
 	{
-		img.at(x1, y1) = color;
+		if (0 <= x1 && x1 <= img.width() - 1 && 0 <= y1 && y1 <= img.width() - 1)
+			img.at(x1, y1) = color;
 
 		if (x1 == x2 && y1 == y2)
 			break;

@@ -42,23 +42,14 @@ int main()
     gc.process(baboonImg1, baboonImg2);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
-    DrawingModule::drawRectangle(baboonImg2, Point(20, 20), Point(100, 150), (unsigned char)255);
+    DrawingModule::drawRectangle(baboonImg2, Point(10, 10), Point(100, 150), (unsigned char)255);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
-    DrawingModule::drawLine(baboonImg2, Point(20, 20), Point(100, 150), (unsigned char)255);
+    DrawingModule::drawLine(baboonImg2, Point(-100, -100), Point(100, 150), (unsigned char)255);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
 
-    DrawingModule::drawLine(baboonImg2, Point(20, 300), Point(10, 300), (unsigned char)255);
+    DrawingModule::drawCircle(baboonImg2, Point(500, 500), 20, (unsigned char)255);
     baboonImg2.save("../images/baboon_2.ascii.pgm");
-
-    DrawingModule::drawCircle(baboonImg2, Point(400, 400), 10, (unsigned char)255);
-    baboonImg2.save("../images/baboon_2.ascii.pgm");
-
-    /*
-        Image zeroImage(10, 10);
-        DrawingModule::drawRectangle(zeroImage, Point(2, 2), Point(8, 8), (unsigned char)1);
-        zeroImage.save("../images/black_image");
-    */
 
     // _CrtDumpMemoryLeaks();
     // code in main must be put in { } in order for the destructor to kick in before the _CrtDumpMemoryLeaks() gets called
